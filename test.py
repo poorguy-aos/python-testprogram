@@ -101,7 +101,7 @@ tree5 = gb.obtain_trees(7)
 
 all_add = [tree1, tree2, tree3, tree4, tree5]
 print(all_add)
-final_trees = sum(all_add) + 5  - 20 - 11
+final_trees = sum(all_add) - 17  - 20 - 11
 with open('trees-data.txt', 'r') as data:
     temp = data.readlines()[-1].split(',')
     temp[0] = str(int(temp[0]) + final_trees)
