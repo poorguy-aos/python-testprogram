@@ -93,15 +93,15 @@ all_add = []
 #     input_days = int(input("please input a number of a days"))
 #     all_add[i] = cls.obtain_trees(input_days)
 
-tree1 = ge.obtain_trees(1)
-tree2 = hb.obtain_trees(5)
+tree1 = ge.obtain_trees(4)
+tree2 = hb.obtain_trees(7)
 tree3 = bt.obtain_trees(7)
-tree4 = ml.obtain_trees(4)
-tree5 = gb.obtain_trees(5)
+tree4 = ml.obtain_trees(6)
+tree5 = gb.obtain_trees(7)
 
 all_add = [tree1, tree2, tree3, tree4, tree5]
 print(all_add)
-final_trees = sum(all_add) - 21  - 30
+final_trees = sum(all_add) - 34  - 20
 with open('trees-data.txt', 'r') as data:
     temp = data.readlines()[-1].split(',')
     temp[0] = str(int(temp[0]) + final_trees)
