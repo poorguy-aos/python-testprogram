@@ -36,3 +36,5 @@
 -180,0,4,47,0,1,cache,end
 -215,0,5,48,0,2,cache,end
 -235,0,6,0,0,3,cache,end
+# new version data format (version 2.0)
+-235,0,6,0,0,0,0,3

@@ -1,3 +1,4 @@
+#! /usr/bin/env python3
 class ColorWeight:
     '''颜色权重，用于显色定义权重'''
 
@@ -28,25 +29,15 @@ class ColorWeight:
         tree += self.reward_trees(days, preCombos)
         return tree
 
-    # def calculate_tree(self, days):
-    #     self.trees = self.obtain_trees(days) + self.reward_trees(days)
-    #     # with open('trees-data.txt', 'a') as data:
-    #     #     self.combos[0] = str(int(self.combos[0]) + self.trees)
-    #     #     data.writelines(','.join(self.combos))
-    #     return self.trees
-
 
 class BlueWeight(ColorWeight):
-    def __init__(self, number=-2):
+    def __init__(self):
         super().__init__()
         self.weight = 1
-        self.number = number
         self.reward_weight = [0, 1, 2, 4, 7, 11, 16]
-        if number == -2:
-            raise Exception('you must give squence number!')
 
     def reward_trees(self, days, preCombos):
-        temp = self.Combos_Weeks(days, preCombos)
+        temp = self.Combos_Weeks(preCombos, days)
         if temp-1 >= 5:
             return 10
         elif temp == 0:
@@ -56,15 +47,12 @@ class BlueWeight(ColorWeight):
 
 
 class Yellow_Weiht(ColorWeight):
-    def __init__(self, number=-2):
+    def __init__(self):
         super().__init__()
         self.weight = 4
-        self.number = number
-        if number == -2:
-            raise Exception('you must give squence number!')
 
     def reward_trees(self, days, preCombos):
-        temp = self.Combos_Weeks(days, preCombos)
+        temp = self.Combos_Weeks(preCombos, days)
         if temp <= 1:
             return 0
         elif 2 ** (temp - 1) >= 10:
@@ -76,34 +64,44 @@ class Yellow_Weiht(ColorWeight):
 class Red_Weight(ColorWeight):
     '''Red_Weight too complex still wait to finish'''
 
-    def __init__(self, number=-2):
+    def __init__(self):
         super().__init__()
         self.weight = 6
-        self.number = number
-        if number == -2:
-            raise Exception('you must give squence number!')
 
     def reward_trees(self, days):
         pass
 
 
-ge = Yellow_Weiht(1)
-hb = BlueWeight(2)
-bt = BlueWeight(3)
-ml = BlueWeight(4)
-gb = Yellow_Weiht(5)
+ge = Yellow_Weiht()
+hb = BlueWeight()
+bt_ml = BlueWeight()
+Lew = Yellow_Weiht()
+Reading = Yellow_Weiht()
+Intro = Yellow_Weiht()
+gb = Yellow_Weiht()
 
-all_color = [ge, hb, bt, ml, gb]
-all_add = []
+all_color = [ge, hb, bt_ml, Lew, Reading, Intro, gb]
+all_add = 0
 with open('trees-data.txt', 'r') as data:
     last_combos = data.readlines()[-1].split(',')
+    days = input(
+        "please input days({} values) split by space: ".format(len(all_color)))
+    obtainDay = input(
+        "please input obtain days and red color split by space: ")
+    days = [int(i) for i in days.split()]
+    obtainDay = [int(i) for i in obtainDay.split()]
     for i, colori in enumerate(all_color):
-            day = int(input("please input days:"))
-            all_add.append(colori.obtain_trees(days, last_combos[i+1]))
-    last_combos[0] = str(int(last_combos[0]) + sum(all_add) - 22 - 20)
+        # if length of last_combos not enough then append new value
+        if i > len(last_combos) - 2:
+            last_combos.append('0')
+        all_add += colori.obtain_trees(days[i], last_combos[i+1])
+    last_combos[0] = str(int(last_combos[0]) + all_add +
+                         obtainDay[0] - obtainDay[1] - 60)
 
 with open('trees-data.txt', 'a') as data:
-    for i in range(5):
-        last_combos[i+1] = all_color[i].combos
-    print(','.join(last_combos))
-    data.writelines(','.join(last_combos))
+    for i, colori in enumerate(all_color):
+        # print(colori.combos)
+        last_combos[i+1] = colori.combos
+    addData = ','.join(last_combos)
+    print(addData)
+    data.writelines('\n'+addData)
